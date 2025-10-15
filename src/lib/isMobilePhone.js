@@ -1,4 +1,4 @@
-mport assertString from './util/assertString'; 
+import assertString from './util/assertString'; 
 
  
 
@@ -390,7 +390,7 @@ return false;
 
 return phones[locale].test(str); 
 
-// alias falsey locale as 'any' 
+
 
 } else if (!locale || locale === 'any') { 
 
