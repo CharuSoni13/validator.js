@@ -28,6 +28,16 @@ export default function isDate(input, options) {
     options = merge(options, default_date_options);
   }
   if (typeof input === 'string' && isValidFormat(options.format)) {
+    // Reject dates that start with a hyphen or delimiter
+    if (/^[-\/]/.test(input)) {
+      return false;
+    }
+
+    // Reject dates that end with a delimiter
+    if (/[-\/]$/.test(input)) {
+      return false;
+    }
+
     if (options.strictMode && input.length !== options.format.length) return false;
     const formatDelimiter = options.delimiters
       .find(delimiter => options.format.indexOf(delimiter) !== -1);
@@ -45,15 +55,15 @@ export default function isDate(input, options) {
         return false;
       }
 
+      // Check if any part contains a hyphen (invalid for date components)
+      if (dateWord.includes('-')) {
+        return false;
+      }
+
       dateObj[formatWord.charAt(0)] = dateWord;
     }
 
     let fullYear = dateObj.y;
-
-    // Check if the year starts with a hyphen
-    if (fullYear.startsWith('-')) {
-      return false; // Hyphen before year is not allowed
-    }
 
     if (dateObj.y.length === 2) {
       const parsedYear = parseInt(dateObj.y, 10);
